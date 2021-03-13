@@ -40,7 +40,7 @@ namespace Business.Concrete
         {
             //business code
             //Aynı isimde ürün eklenemez 
-            //Eğer mevcut kategori sayısı 15'i geçtiyse sisteme yeni ürün eklenemez
+            //Eğer mevcut kategori sayısı 15'i geçtiyse sisteme yeni ürün eklenemezz
 
             IResult result= BusinessRules.Run(CheckIfProductNameExists(product.ProductName),
                 CheckIfProductCountOfCategoryCorrect(product.CategoryId), CheckIfCategoryLimitExceded());
@@ -66,10 +66,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductsListed);
         }
 
-        public IDataResult<List<Product>> GetAllByCategoryId(int id)
-        {
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
-        }
+        
         [CacheAspect]
         //[PerformanceAspect(5)]
         public IDataResult<Product> GetById(int productId)
@@ -84,18 +81,18 @@ namespace Business.Concrete
 
         public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            if (DateTime.Now.Hour == 23)
+             if (DateTime.Now.Hour == 23)
             {
                 return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
             }
             return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
         }
 
-        public IDataResult<List<Product>> GettAllByCategoryId(int id)
+        public IDataResult<List<Product>> GetAllByCategoryId(int id)
         {
-            throw new NotImplementedException();
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
         }
-
+         
         [ValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Update(Product product)
@@ -103,7 +100,7 @@ namespace Business.Concrete
             var result = _productDal.GetAll(p => p.CategoryId == product.CategoryId).Count;
             if (result >= 10)
             {
-                return new ErrorResult(Messages.ProductCountOfCategoryError);
+                return new ErrorResult(Messages.ProductCountOfCategoryError);   
             }
             throw new NotImplementedException();
         } 
