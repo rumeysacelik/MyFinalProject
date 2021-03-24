@@ -32,12 +32,13 @@ namespace Business.Concrete
             _categoryService = categoryService;
             
         }
-         
-        [SecuredOperation("product.add")]  
+         //claim
+        [SecuredOperation("product.add,admin")]  
         [ValidationAspect(typeof(ProductValidator))]
         [CacheRemoveAspect("IProductService.Get")]
         public IResult Add(Product product)
         {
+
             //business code
             //Aynı isimde ürün eklenemez 
             //Eğer mevcut kategori sayısı 15'i geçtiyse sisteme yeni ürün eklenemezz
